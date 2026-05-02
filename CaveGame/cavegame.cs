@@ -18,7 +18,8 @@ namespace CaveGame
         {
             Console.Title = "CaveGame";
             Console.CursorVisible = false;
-
+            Console.SetWindowSize(122, 30);
+            Console.SetBufferSize(122, 30);
 
             while (true)
             {
