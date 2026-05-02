@@ -1,6 +1,11 @@
-﻿using CaveGame;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CaveGame.Entities;
+using CaveGame.Core;
+using CaveGame.Edit;
 
-namespace Config
+namespace CaveGame.Menu
 {
     class Settings
     {
@@ -8,10 +13,10 @@ namespace Config
         public static int selectedSpeed = 3;
         public static int selectedQuantity = 1;
         public static bool selectedRender = false;
-        public string AmountMonsters { get; } = "Количество монстров: ";
-        public string MonstersSpeed { get; } = "Скорость монстров: ";
-        public string Render { get; } = "Ограниченная видимость: ";
-        public string Back { get; } = "Назад";
+        public string amountMonsters { get; } = "Количество монстров: ";
+        public string monstersSpeed { get; } = "Скорость монстров: ";
+        public string render { get; } = "Ограниченная видимость: ";
+        public string back { get; } = "Назад";
         public string symbol { get; } = "<";
 
         public int width = Console.WindowWidth;
@@ -32,53 +37,20 @@ namespace Config
 
         public void ShowSettings()
         {
-            int centerX = (Console.WindowWidth / 2) - (AmountMonsters.Length / 2);
+            int centerX = (Console.WindowWidth / 2) - (amountMonsters.Length / 2);
             int centerY = (Console.WindowHeight / 2) - 1;
 
-            if (selectedButton == 0)
-            {
-                Console.SetCursorPosition(centerX, centerY);
-                Console.WriteLine(MonstersSpeed + speedList[selectedSpeed] + symbol + "  ");
-                Console.SetCursorPosition(centerX, centerY + 1);
-                Console.WriteLine(AmountMonsters + selectedQuantity + " ");
-                Console.SetCursorPosition(centerX, centerY + 2);
-                Console.WriteLine(Render + renderList[selectedRender] + " ");
-                Console.SetCursorPosition(centerX, centerY + 3);
-                Console.WriteLine(Back + " ");
-            }
-            else if (selectedButton == 1)
-            {
-                Console.SetCursorPosition(centerX, centerY);
-                Console.WriteLine(MonstersSpeed + speedList[selectedSpeed] + "   ");
-                Console.SetCursorPosition(centerX, centerY + 1);
-                Console.WriteLine(AmountMonsters + selectedQuantity + symbol + " ");
-                Console.SetCursorPosition(centerX, centerY + 2);
-                Console.WriteLine(Render + renderList[selectedRender] + " ");
-                Console.SetCursorPosition(centerX, centerY + 3);
-                Console.WriteLine(Back + " ");
-            }
-            else if (selectedButton == 2)
-            {
-                Console.SetCursorPosition(centerX, centerY);
-                Console.WriteLine(MonstersSpeed + speedList[selectedSpeed] + "   ");
-                Console.SetCursorPosition(centerX, centerY + 1);
-                Console.WriteLine(AmountMonsters + selectedQuantity + " ");
-                Console.SetCursorPosition(centerX, centerY + 2);
-                Console.WriteLine(Render + renderList[selectedRender] + symbol + " ");
-                Console.SetCursorPosition(centerX, centerY + 3);
-                Console.WriteLine(Back + " ");
-            }
-            else
-            {
-                Console.SetCursorPosition(centerX, centerY);
-                Console.WriteLine(MonstersSpeed + speedList[selectedSpeed] + "   ");
-                Console.SetCursorPosition(centerX, centerY + 1);
-                Console.WriteLine(AmountMonsters + selectedQuantity + " ");
-                Console.SetCursorPosition(centerX, centerY + 2);
-                Console.WriteLine(Render + renderList[selectedRender] + " ");
-                Console.SetCursorPosition(centerX, centerY + 3);
-                Console.WriteLine(Back + symbol + " ");
-            }
+            Console.SetCursorPosition(centerX, centerY);
+            Console.WriteLine(monstersSpeed + speedList[selectedSpeed] + (selectedButton == 0 ? symbol + "  " : "  "));
+
+            Console.SetCursorPosition(centerX, centerY + 1);
+            Console.WriteLine(amountMonsters + selectedQuantity + (selectedButton == 1 ? symbol + "  " : "  "));
+
+            Console.SetCursorPosition(centerX, centerY + 2);
+            Console.WriteLine(render + renderList[selectedRender] + (selectedButton == 2 ? symbol + "  " : "  "));
+
+            Console.SetCursorPosition(centerX, centerY + 3);
+            Console.WriteLine(back + (selectedButton == 3 ? symbol : "  "));
         }
 
         public int GetInputSettings()

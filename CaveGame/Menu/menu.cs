@@ -1,11 +1,19 @@
-﻿namespace Game
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CaveGame.Entities;
+using CaveGame.Core;
+using CaveGame.Edit;
+
+namespace CaveGame.Menu
 {
-    class Menu
+    class GameMenu
     {
-        public int ChoisedButton = 0;
-        public string Play { get; } = "Играть";
-        public string Settings { get; } = "Настройки";
-        public string Quit { get; } = "Выйти";
+        public int selectedButton = 0;
+        public string play { get; } = "Играть";
+        public string settings { get; } = "Настройки";
+        public string quit { get; } = "Выйти";
+        public string redactor { get; } = "Редактор";
         public string symbol { get; } = "<";
 
         public int width = Console.WindowWidth;
@@ -37,36 +45,20 @@
 
         public void ShowMenu()
         {
-            int centerX = (Console.WindowWidth / 2) - (Play.Length / 2);
+            int centerX = (Console.WindowWidth / 2) - (play.Length / 2);
             int centerY = (Console.WindowHeight / 2) - 1;
 
-            if (ChoisedButton  == 0)
-            {
-                Console.SetCursorPosition(centerX, centerY);
-                Console.WriteLine(Play + symbol);
-                Console.SetCursorPosition(centerX, centerY + 1);
-                Console.WriteLine(Settings + " ");
-                Console.SetCursorPosition(centerX, centerY + 2);
-                Console.WriteLine(Quit + " ");
-            }
-            else if (ChoisedButton == 1)
-            {
-                Console.SetCursorPosition(centerX, centerY);
-                Console.WriteLine(Play + " ");
-                Console.SetCursorPosition(centerX, centerY + 1);
-                Console.WriteLine(Settings + symbol);
-                Console.SetCursorPosition(centerX, centerY + 2);
-                Console.WriteLine(Quit + " ");
-            }
-            else
-            {
-                Console.SetCursorPosition(centerX, centerY);
-                Console.WriteLine(Play + " ");
-                Console.SetCursorPosition(centerX, centerY + 1);
-                Console.WriteLine(Settings + " ");
-                Console.SetCursorPosition(centerX, centerY + 2);
-                Console.WriteLine(Quit + symbol);
-            }
+            Console.SetCursorPosition(centerX, centerY);
+            Console.WriteLine(play + (selectedButton == 0 ? symbol + "  " : "  "));
+
+            Console.SetCursorPosition(centerX, centerY + 1);
+            Console.WriteLine(settings + (selectedButton == 1 ? symbol + "  " : "  "));
+
+            Console.SetCursorPosition(centerX, centerY + 2);
+            Console.WriteLine(redactor + (selectedButton == 2 ? symbol + "  " : "  "));
+
+            Console.SetCursorPosition(centerX, centerY + 3);
+            Console.WriteLine(quit + (selectedButton == 3 ? symbol + "  " : "  "));
         }
 
         public int GetInputMenu()
@@ -90,28 +82,32 @@
                 switch (key.Key)
                 {
                     case ConsoleKey.Enter:
-                        if (ChoisedButton == 0)
+                        if (selectedButton == 0)
                         {
                             return 0;
                         }
-                        else if (ChoisedButton == 1)
+                        else if (selectedButton == 1)
                         {
                             return 1;
                         }
-                        else
+                        else if (selectedButton == 2)
                         {
                             return 2;
                         }
-                    case ConsoleKey.W:
-                        if (ChoisedButton > 0)
+                        else
                         {
-                            ChoisedButton--;
+                            return 3;
+                        }
+                    case ConsoleKey.W:
+                        if (selectedButton > 0)
+                        {
+                            selectedButton--;
                         }
                         break;
                     case ConsoleKey.S:
-                        if (ChoisedButton < 2)
+                        if (selectedButton < 3)
                         {
-                            ChoisedButton++;
+                            selectedButton++;
                         }
                         break;
                 }
