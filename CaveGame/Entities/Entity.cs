@@ -16,6 +16,8 @@ namespace CaveGame.Entities
         public int lastEntityY { get; protected set; }
 
         protected DateTime lastMoveTime = DateTime.MinValue;
+        protected DateTime lastStepTime = DateTime.MinValue;
+
         private Queue<(int, int)> visitedCells = new Queue<(int, int)>();
         private int visionRadius = 20;
         private int memorySize = 50;
@@ -28,7 +30,7 @@ namespace CaveGame.Entities
             lastEntityY = entityY;
         }
 
-        public virtual void UpdatePosition(Person player, GameMap map) // применять checkcollisions 
+        public virtual void UpdatePosition(Person player, GameMap map, AudioManager audio) // применять checkcollisions 
         {
             if ((DateTime.Now - lastMoveTime).TotalSeconds < (double)Settings.selectedSpeed / 10.0)
             {
@@ -95,6 +97,17 @@ namespace CaveGame.Entities
                 else
                 {
                     nextStep = directions[rnd.Next(directions.Count)];
+                }
+            }
+
+            float volume = 1.0f - (distanceToPlayer / 30.0f);
+
+            if (volume > 0)
+            {
+                if ((DateTime.Now - lastStepTime).TotalMilliseconds >= 200)
+                {
+                    audio.PlayRandomSteps(volume);
+                    lastStepTime = DateTime.Now;
                 }
             }
 

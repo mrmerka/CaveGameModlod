@@ -29,10 +29,10 @@ namespace CaveGame.Entities
             entityY = y;
         }
 
-        public new void UpdatePosition(Person player, GameMap map)
+        public new void UpdatePosition(Person player, GameMap map, AudioManager audio)
         {
             PersonLastPosition();
-            base.UpdatePosition(player, map);
+            base.UpdatePosition(player, map, audio);
         }
     }
 }

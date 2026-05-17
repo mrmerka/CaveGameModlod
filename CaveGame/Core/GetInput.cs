@@ -12,6 +12,7 @@ namespace CaveGame.Core
     {
         private DateTime lastMoveTime = DateTime.Now;
         private DateTime lastSwitchTime = DateTime.Now;
+        private DateTime lastStepTime = DateTime.MinValue;
 
         [DllImport("user32.dll")]
         public static extern short GetAsyncKeyState(int key);
@@ -20,10 +21,10 @@ namespace CaveGame.Core
         {
             return (GetAsyncKeyState(vKey) & 0x8000) != 0;
         }
-        public void GetInputMenu(Person person, GameMap map, Render render)
+        public void GetInputMenu(Person person, GameMap map, Render render, AudioManager audio)
         {
 
-            if ((DateTime.Now - lastMoveTime).TotalMilliseconds < 100)
+            if ((DateTime.Now - lastMoveTime).TotalMilliseconds < 150)
             {
                 return;
             }
@@ -31,6 +32,9 @@ namespace CaveGame.Core
             person.PersonLastPosition();
 
             bool moved = false;
+
+            int oldX = person.entityX;
+            int oldY = person.entityY;
 
             if (IsKeyDown(0x57))
             {
@@ -62,6 +66,14 @@ namespace CaveGame.Core
             if (moved)
             {
                 lastMoveTime = DateTime.Now;
+
+                bool actuallyMoved = (person.entityX != oldX || person.entityY != oldY);
+
+                if (actuallyMoved && (DateTime.Now - lastStepTime).TotalMilliseconds >= 300)
+                {
+                    audio.PlayRandomSteps(1.0f);
+                    lastStepTime = DateTime.Now;
+                }
             }
 
             while (Console.KeyAvailable)

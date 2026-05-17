@@ -1,6 +1,6 @@
-﻿using CaveGame.Entities;
-using CaveGame.Core;
+﻿using CaveGame.Core;
 using CaveGame.Edit;
+using CaveGame.Entities;
 using CaveGame.Menu;
 using System;
 using System.Data;
@@ -35,6 +35,7 @@ namespace CaveGame
                 Render render = new Render();
                 Editor edit = new Editor();
                 ModeSelect mode = new ModeSelect();
+                AudioManager audio = new AudioManager();
 
                 int menuChoise = menu.GetInputMenu();
 
@@ -65,13 +66,13 @@ namespace CaveGame
                             {
                                 if (ent is Monster m)
                                 {
-                                    m.UpdatePosition(person, map);
+                                    m.UpdatePosition(person, map, audio);
                                 }
                             }
                             person.CheckCollisions(list, render);
                             render.Draw(map, person, list);
                             gui.ShowFPS();
-                            input.GetInputMenu(person, map, render);
+                            input.GetInputMenu(person, map, render, audio);
                         }
                             Console.Clear();
 
@@ -125,13 +126,13 @@ namespace CaveGame
                             {
                                 if (ent is Monster m)
                                 {
-                                    m.UpdatePosition(person, customMap);
+                                    m.UpdatePosition(person, customMap, audio);
                                 }
                             }
                             person.CheckCollisions(list, render);
                             render.Draw(customMap, person, list);
                             gui.ShowFPS();
-                            input.GetInputMenu(person, customMap, render);
+                            input.GetInputMenu(person, customMap, render, audio);
                         }
                         Console.Clear();
                         Thread.Sleep(2000);
