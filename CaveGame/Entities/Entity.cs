@@ -115,7 +115,7 @@ namespace CaveGame.Entities
             entityY = nextStep.y;
         }
 
-        public void CheckCollisions(List<Entity> list, Render render)
+        public bool CheckCollisions(List<Entity> list, Render render)
         {
             for (int i = list.Count - 1; i >= 0; i--)
             {
@@ -130,7 +130,7 @@ namespace CaveGame.Entities
                     }
                     if (ent is Monster monster)
                     {
-                        Environment.Exit(0);
+                        return true;
                     }
                     if (ent is ExitSymbol exit)
                     {
@@ -139,6 +139,7 @@ namespace CaveGame.Entities
                     }
                 }
             }
+            return false;
         }
 
         public void SetPosition(int x, int y)

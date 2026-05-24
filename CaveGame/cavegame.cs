@@ -69,7 +69,10 @@ namespace CaveGame
                                     m.UpdatePosition(person, map, audio);
                                 }
                             }
-                            person.CheckCollisions(list, render);
+                            if (person.CheckCollisions(list, render))
+                            {
+                                break;
+                            }
                             render.Draw(map, person, list);
                             gui.ShowFPS();
                             input.GetInputMenu(person, map, render, audio);
