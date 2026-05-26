@@ -1,8 +1,9 @@
-﻿using CaveGame.Core;
+using CaveGame.Core;
 using CaveGame.Edit;
 using CaveGame.Entities;
 using CaveGame.Menu;
 using System;
+using System.Collections.Generic; 
 using System.Data;
 using System.Globalization;
 using System.Numerics;
@@ -58,7 +59,7 @@ namespace CaveGame
                     {
                         Console.Clear();
 
-                        while (exit.EndOfGame()) // сюжетный цикл
+                        while (exit.EndOfGame()) 
                         {
                             gui.FPSCounter();
                             Console.SetCursorPosition(0, 0);
@@ -77,16 +78,30 @@ namespace CaveGame
                             gui.ShowFPS();
                             input.GetInputMenu(person, map, render, audio);
                         }
-                            Console.Clear();
+                        Console.Clear();
 
-                            Thread.Sleep(2000);
+                        Thread.Sleep(2000);
                     }
                     else if (menuModeChoise == 1)
                     {
                         Console.Clear();
                         string[] maps = edit.GetCustomMaps();
                         int chosen = mode.GetInputCustomMap(maps, false);
-                        edit.LoadMap(maps[chosen] + ".txt");
+
+                        try
+                        {
+                            edit.LoadMap(maps[chosen] + ".txt");
+                        }
+                        catch (Exception x)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Ошибка загрузки карты! Возврат в главное меню...");
+                            Thread.Sleep(2000);
+                            Console.Clear();
+
+                            
+                            continue;
+                        }
 
                         GameMap customMap = new GameMap(edit.customMap);
 
@@ -121,7 +136,7 @@ namespace CaveGame
                             customMap.EraseSymbol(ex, ey);
                         }
 
-                        while (exit.EndOfGame()) // кастомный цикл
+                        while (exit.EndOfGame()) 
                         {
                             gui.FPSCounter();
                             Console.SetCursorPosition(0, 0);
@@ -140,9 +155,6 @@ namespace CaveGame
                         Console.Clear();
                         Thread.Sleep(2000);
                     }
-
-
-
                 }
                 else if (menuChoise == 1)
                 {
@@ -153,7 +165,7 @@ namespace CaveGame
                         continue;
                     }
                 }
-                else if (menuChoise == 2) // редактор
+                else if (menuChoise == 2) 
                 {
                     Console.Clear();
                     string[] maps = edit.GetCustomMaps();
